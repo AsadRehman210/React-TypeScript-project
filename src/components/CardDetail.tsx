@@ -2,8 +2,10 @@ import axios from 'axios'
 import React, { useCallback, useEffect, useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom'
 import { Cards } from '../Types/Types'
+import Preloader from './Preloader.tsx'
 
 const CardDetail = () => {
+    const [cardLoader, setCardLoader] = useState(true)
     const [idData, setIdData] = useState<Cards>({
         userId: "",
         id: "",
@@ -17,10 +19,12 @@ const CardDetail = () => {
         try {
             const response = await axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`)
             const res = await response.data
-            setIdData(res)
+            setIdData(res);
+            setCardLoader(false)
 
         } catch (error) {
             console.log(`Error ${error}`)
+            setCardLoader(false)
 
         }
 
@@ -29,6 +33,11 @@ const CardDetail = () => {
         getIndividualData();
         // console.log("welcome to individual card Detail")
     }, [getIndividualData]);
+
+    // PreLoader rendering
+  if (cardLoader) {
+    return <Preloader />;
+  }
 
     return (
         <div className='container mx-auto px-4 my-5'>
