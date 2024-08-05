@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Card from '../components/Card.tsx'
 import axios from "axios";
 import { Cards } from '../Types/Types.ts';
@@ -8,7 +8,7 @@ import Pagination from '../components/Pagination.tsx';
 const Home: React.FC = () => {
   const [cardData, setCardData] = useState<Cards[]>([])
   const [currentPage, setCurrentPage] = useState(1);
-  const [cardsPerPage] = useState(15);
+  const cardsPerPage = useRef(15);
 
 
   const getData = async () => {
@@ -30,8 +30,8 @@ const Home: React.FC = () => {
 
 
   // Get current cards
-  const indexOfLastCard = currentPage * cardsPerPage;
-  const indexOfFirstCard = indexOfLastCard - cardsPerPage;
+  const indexOfLastCard = currentPage * cardsPerPage.current;
+  const indexOfFirstCard = indexOfLastCard - cardsPerPage.current;
   const currentCards = cardData.slice(indexOfFirstCard, indexOfLastCard);
 
   // On Change Page
@@ -46,7 +46,7 @@ const Home: React.FC = () => {
       <div className='container mx-auto'>
         <h1 className='text-center mt-5 text-blue-700 text-4xl'>Welcome to Home Page</h1>
 
-        <div className='grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 gap-x-6 gap-y-16 my-8 px-4 auto-rows-auto'>
+        <div className='grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 xs:grid-cols-1 gap-x-6 gap-y-16 my-8 px-4 auto-rows-auto'>
           {currentCards.map((data, index) => {
             return (
               <Card
@@ -62,7 +62,7 @@ const Home: React.FC = () => {
         </div>
         <Pagination
           CurrentPage={currentPage}
-          totalPages={Math.ceil(cardData.length / cardsPerPage)}
+          totalPages={Math.ceil(cardData.length / cardsPerPage.current)}
           onPageChange={Paginate}
         />
       </div>
