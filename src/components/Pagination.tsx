@@ -50,7 +50,7 @@ const Pagination: React.FC<PaginationProps> = ({ CurrentPage, totalPages, onPage
     const pageNumbers = getPageNumbers();
 
     return (
-        <div className="flex justify-center items-center mb-8 mt-20">
+        <div className="flex justify-center items-center mb-8 mt-auto">
             <ul className="flex border border-gray-300 rounded overflow-hidden">
                 
                 <li className={`border-r border-gray-300 ${CurrentPage === 1 &&'pointer-events-none'}`}>

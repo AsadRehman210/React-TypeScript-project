@@ -3,9 +3,11 @@ import Card from '../components/Card.tsx'
 import axios from "axios";
 import { Cards } from '../Types/Types.ts';
 import Pagination from '../components/Pagination.tsx';
+import Preloader from '../components/Preloader.tsx';
 
 
 const Home: React.FC = () => {
+  const [loader, setLoader] = useState(true)
   const [cardData, setCardData] = useState<Cards[]>([])
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = useRef(15);
@@ -16,9 +18,11 @@ const Home: React.FC = () => {
       const response = await axios.get('https://jsonplaceholder.typicode.com/posts')
       const res = await response.data;
       setCardData(res);
+      setLoader(false)
 
     } catch (error) {
       console.log(`Error ${error}`)
+      setLoader(false)
 
     }
 
@@ -40,10 +44,14 @@ const Home: React.FC = () => {
     console.log(pageNumber)
 
   }
+  // PreLoader rendering
+  if (loader) {
+    return <Preloader />;
+  }
 
   return (
-    <main>
-      <div className='container mx-auto'>
+    <main >
+      <div className='container mx-auto flex flex-col min-h-screen'>
         <h1 className='text-center mt-5 text-blue-700 text-4xl'>Welcome to Home Page</h1>
 
         <div className='grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 xs:grid-cols-1 gap-x-6 gap-y-16 my-8 px-4 auto-rows-auto'>
@@ -60,6 +68,7 @@ const Home: React.FC = () => {
           })}
 
         </div>
+
         <Pagination
           CurrentPage={currentPage}
           totalPages={Math.ceil(cardData.length / cardsPerPage.current)}
