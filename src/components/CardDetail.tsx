@@ -34,6 +34,7 @@ const CardDetail = () => {
         // console.log("welcome to individual card Detail")
     }, [getIndividualData]);
 
+    
     // PreLoader rendering
   if (cardLoader) {
     return <Preloader />;
