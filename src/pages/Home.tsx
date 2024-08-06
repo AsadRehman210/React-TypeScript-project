@@ -11,7 +11,6 @@ const Home: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0)
   const cardsPerPage = 15;
-  console.log(totalPages)
 
   const getData = async (page: number) => {
     setLoader(true);
