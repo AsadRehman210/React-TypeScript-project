@@ -9,10 +9,12 @@ const Home: React.FC = () => {
   const [loader, setLoader] = useState(true);
   const [cardData, setCardData] = useState<Cards[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const cardsPerPage = 15; 
+  const [totalPages, setTotalPages] = useState(0)
+  const cardsPerPage = 15;
+  console.log(totalPages)
 
   const getData = async (page: number) => {
-    setLoader(true); 
+    setLoader(true);
     try {
       const response = await axios.get('https://jsonplaceholder.typicode.com/posts', {
         params: {
@@ -20,8 +22,13 @@ const Home: React.FC = () => {
           _limit: cardsPerPage,
         },
       });
+      console.log(response.headers)
+
+      const totalItems = parseInt(response.headers['x-total-count'], 10);
+      setTotalPages(Math.ceil(totalItems / cardsPerPage))
+
       const res = await response.data
-      setCardData(res); 
+      setCardData(res);
       setLoader(false);
     } catch (error) {
       console.log(`Error ${error}`);
@@ -30,7 +37,7 @@ const Home: React.FC = () => {
   };
 
   useEffect(() => {
-    getData(currentPage); 
+    getData(currentPage);
   }, [currentPage]);
 
   // On Change Page
@@ -61,7 +68,7 @@ const Home: React.FC = () => {
 
         <Pagination
           CurrentPage={currentPage}
-          totalPages={Math.ceil(100 / cardsPerPage)} 
+          totalPages={totalPages}
           onPageChange={handlePageChange}
         />
       </div>
