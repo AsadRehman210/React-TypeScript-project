@@ -8,7 +8,7 @@ const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
 
     const handleToggle = () => {
-        setMenuOpen(!menuOpen);;
+        setMenuOpen(!menuOpen);
     };
 
     const token = useSelector((state: RootState) => state.user.token);

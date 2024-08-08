@@ -10,6 +10,7 @@ import { RootState } from './Types/Types.ts';
 import CardDetail from './components/CardDetail.tsx';
 
 
+
 function App() {
   const token = useSelector((state: RootState) => state.user.token)
 
@@ -19,18 +20,21 @@ function App() {
       <Navbar />
       <Routes>
 
-        <Route index element={token ? <Navigate to="/home" /> : <Navigate to="/login" />} />
-        {token && <Route path="/home" element={<Home />} />}
-        {token && <Route path="/home/:id" element={<CardDetail />} />}
-        {!token && <Route path="/login" element={<Login />} />}
-        {token && <Route path="/logout" element={<Logout />} />}
-        {!token && <Route path="/signup" element={<SignUp />} />}
+        <Route path="/" element={token ? <Navigate to="/home" /> : <Navigate to="/login" />} />
+        {token ? (
+          <>
+            <Route path="/home" element={<Home />} />
+            <Route path="/home/:id" element={<CardDetail />} /> 
+            <Route path="/logout" element={<Logout />} />
+          </>
+        ) : (
+          <>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+          </>
+        )}
+        <Route path="*" element={<Navigate to={token ? "/home" : "/login"} />} />
 
-        <Route path="/home" element={!token && <Navigate to="/login" />} />
-        <Route path="/home/:id" element={!token && <Navigate to="/login" />} />
-        <Route path="/logout" element={!token && <Navigate to="/login" />} />
-        <Route path="/login" element={token && <Navigate to="/home" />} />
-        <Route path="/signup" element={token && <Navigate to="/home" />} />
       </Routes>
     </>
   );

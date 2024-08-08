@@ -21,7 +21,6 @@ const Home: React.FC = () => {
           _limit: cardsPerPage,
         },
       });
-      console.log(response.headers)
 
       const totalItems = parseInt(response.headers['x-total-count'], 10);
       setTotalPages(Math.ceil(totalItems / cardsPerPage))
