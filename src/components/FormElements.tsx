@@ -1,22 +1,19 @@
 import React from 'react';
-import { FormField } from '../Types/Types.ts';
+import { UseFormRegister, FieldErrors } from 'react-hook-form';
+import { FormField, FormData } from '../Types/Types.ts';
 
 interface FormElementsProps {
     formData: FormField[];
-    handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
-    handleBlur: (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
-    values: { [key: string]: string | boolean };
-    errors: { [key: string]: string | undefined };
-    touched: { [key: string]: boolean | undefined };
+    register: UseFormRegister<FormData>;
+    errors: FieldErrors<FormData>; 
+    getValues?: (field: string) => any; 
 }
 
-const FormElements: React.FC<FormElementsProps> = ({ formData, handleChange, handleBlur, values = {}, errors = {}, touched = {} }) => {
-
+const FormElements: React.FC<FormElementsProps> = ({ formData, register, errors = {}, getValues }) => {
     return (
         <>
             {formData.map((data: FormField, index: number) => {
-
-                const hasError = errors[data.name] && touched[data.name];
+                const hasError = errors[data.name]?.message;
 
                 switch (data.type) {
                     case "select":
@@ -25,11 +22,9 @@ const FormElements: React.FC<FormElementsProps> = ({ formData, handleChange, han
                                 <label className='block mb-2 text-lg font-md'>{data.label}</label>
                                 <select
                                     className={`block bg-white w-full px-3 py-2 border rounded outline-none ${hasError ? 'border-red-500' : 'border-gray-400'}`}
-                                    name={data.name}
-                                    required={data.required}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values[data.name] as string || ''}
+                                    {...register(data.name, {
+                                        required: `${data.label} is required`,
+                                    })}
                                 >
                                     <option value="">Select {data.label}</option>
                                     {data.options?.map(option => (
@@ -41,24 +36,21 @@ const FormElements: React.FC<FormElementsProps> = ({ formData, handleChange, han
                                         </option>
                                     ))}
                                 </select>
-                                {hasError && <p className="mt-2 text-sm text-green-600">{errors[data.name]}</p>}
+                                {hasError && <p className="mt-2 text-sm text-red-600">{hasError}</p>}
                             </div>
                         );
                     case "checkbox":
                         return (
-                            <div className=" mb-3" key={index}>
+                            <div className="mb-3" key={index}>
                                 <label className='block mb-2 text-lg font-md'>{data.label}</label>
                                 <input
                                     type="checkbox"
                                     className={`block w-full px-3 py-2 border rounded outline-none ${hasError ? 'border-red-500' : 'border-gray-400'}`}
-                                    name={data.name}
-                                    required={data.required}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    checked={values[data.name] as boolean || false}
+                                    {...register(data.name, {
+                                        required: `${data.label} is required`,
+                                    })}
                                 />
-
-                                {hasError && <p className="mt-2 text-sm text-green-600">{errors[data.name]}</p>}
+                                {hasError && <p className="mt-2 text-sm text-red-600">{hasError}</p>}
                             </div>
                         );
                     case "radio":
@@ -70,53 +62,62 @@ const FormElements: React.FC<FormElementsProps> = ({ formData, handleChange, han
                                         <input
                                             type="radio"
                                             className={`block w-full px-3 py-2 border rounded outline-none ${hasError ? 'border-red-500' : 'border-gray-400'}`}
-                                            name={data.name}
+                                            {...register(data.name, {
+                                                required: `${data.label} is required`,
+                                            })}
                                             value={option.value}
-                                            required={data.required}
-                                            checked={values[data.name] === option.value}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
                                         />
-
                                     </div>
                                 ))}
-                                {hasError && <p className="mt-2 text-sm text-green-600 font-medium">{errors[data.name]}</p>}
+                                {hasError && <p className="mt-2 text-sm text-red-600 font-medium">{hasError}</p>}
                             </div>
                         );
                     case "textarea":
                         return (
-                            <div className=" mb-3" key={index}>
+                            <div className="mb-3" key={index}>
                                 <label className='block mb-2 text-lg font-md'>{data.label}</label>
                                 <textarea
                                     className={`block w-full px-3 py-2 border rounded outline-none ${hasError ? 'border-red-500' : 'border-gray-400'}`}
                                     placeholder={data.placeholder}
-                                    name={data.name}
-                                    required={data.required}
-                                    style={{ height: "120px" }}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values[data.name] as string || ''}
+                                    {...register(data.name, {
+                                        required: `${data.label} is required`,
+                                    })}
                                 />
-
-                                {hasError && <p className="mt-2 text-sm text-green-600">{errors[data.name]}</p>}
+                                {hasError && <p className="mt-2 text-sm text-red-600">{hasError}</p>}
                             </div>
                         );
                     default:
                         return (
-                            <div className={` mb-3`} key={index}>
+                            <div className={`mb-3`} key={index}>
                                 <label className='block mb-2 text-lg font-md'>{data.label}</label>
                                 <input
                                     type={data.type}
                                     className={`block w-full px-3 py-2 border rounded outline-none ${hasError ? 'border-red-500' : 'border-gray-400'}`}
                                     placeholder={data.placeholder}
-                                    name={data.name}
-                                    required={data.required}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values[data.name] as string || ''}
-                                />
+                                    {...register(data.name, {
+                                        required: `${data.label} is required`,
 
-                                {hasError && <p className="mt-2 text-sm text-green-600">{errors[data.name]}</p>}
+                                        pattern: data.name === 'email' ? {
+                                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                            message: 'Invalid email address'
+                                        } : undefined,
+
+                                        validate: data.name === 'confirmPassword' ? (value) =>
+                                            value === getValues?.('password') || 'Passwords do not match'
+                                            : undefined,
+
+                                        min: data.name === 'age' ? {
+                                            value: 1,
+                                            message: 'Age must be a positive number'
+                                        } : undefined,
+                                        
+                                        max: data.name === 'birthdate' ? {
+                                            value: new Date().getTime(), 
+                                            message: 'Date of Birth cannot be in the future'
+                                        } : undefined,
+                                    })}
+                                />
+                                {hasError && <p className="mt-2 text-sm text-red-600">{hasError}</p>}
                             </div>
                         );
                 }

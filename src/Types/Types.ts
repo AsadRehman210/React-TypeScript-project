@@ -16,7 +16,7 @@ export type RootState = {
 };
 
 export type FormField = {
-    name: string;
+    name: "email" | "password" | "name" | "confirmPassword" | "age" | "birthdate" | "gender" | "detail";
     label: string;
     type: 'text' | 'email' | 'password' | 'number' | 'date' | 'select' | 'textarea' | 'checkbox' | 'radio';
     placeholder?: string;
@@ -25,7 +25,7 @@ export type FormField = {
 };
 
 export type Cards = {
-    userId: number | "" ;
+    userId: number | "";
     id: number | "";
     title: string;
     body: string;
@@ -34,10 +34,20 @@ export type CardProps = {
     id: number | "";
     title: string;
     body: string;
-  }
+}
 export interface PaginationProps {
     CurrentPage: number;
     totalPages: number;
     onPageChange: (pageNumber: number) => void;
-  }
+}
 
+export interface FormData {
+    name?: string;
+    email: string;
+    password: string;
+    confirmPassword?: string;
+    age?: number;
+    birthdate?: Date;
+    gender?: string;
+    detail?: string;
+}

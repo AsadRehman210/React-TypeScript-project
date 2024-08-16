@@ -20,20 +20,25 @@ const Header = () => {
     };
 
     return (
-        <header className="bg-gray-200 sticky top-0">
+        <header className="bg-gray-200 sticky top-0 z-50">
             <div className="container mx-auto px-4">
                 <nav className="flex items-center justify-between h-20">
                     <div className="lg:hidden md:hidden">
                         <button onClick={handleToggle} className="text-2xl text-gray-800">
-                        <i className="fa-solid fa-bars-staggered"></i>
+                            <i className="fa-solid fa-bars-staggered"></i>
                         </button>
                     </div>
                     <div className="hidden lg:flex md:flex lg:gap-4 md:gap-4">
                         <ul className="flex flex-row gap-4">
                             {token && (
-                                <li className="text-lg font-semibold">
-                                    <NavLink to="/home">Home</NavLink>
-                                </li>
+                                <>
+                                    <li className="text-lg font-semibold">
+                                        <NavLink to="/home">Home</NavLink>
+                                    </li>
+                                    <li className="text-lg font-semibold">
+                                        <NavLink to="/slider">Slider</NavLink>
+                                    </li>
+                                </>
                             )}
                             {!token ? (
                                 <>
