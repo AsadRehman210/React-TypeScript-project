@@ -26,7 +26,7 @@ const Login: React.FC = () => {
         <main className='px-4 py-5 flex items-center justify-center' style={{ height: `calc(100vh - 5rem)` }}>
             <div className='container mx-auto'>
                 <form onSubmit={handleSubmit(onSubmit)} className='max-w-md mx-auto lg:shadow-2xl md:shadow-2xl p-8 rounded-lg'>
-                    <h1 className='mb-8 text-4xl font-bold text-blue-700 text-center'>Login</h1>
+                    <h1 className='mb-8 text-4xl text-blue-700 text-center'>Login</h1>
                     <FormElements
                         formData={LogInSchema}
                         register={register}  

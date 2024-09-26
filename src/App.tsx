@@ -9,6 +9,7 @@ import CardDetail from './components/CardDetail.tsx';
 import ProtectedRoute from './components/ProtectedRoute.tsx';
 import PublicRoute from './components/PublicRoute.tsx';
 import Slider from './pages/Slider.tsx';
+import Tabs from './pages/Tabs.tsx';
 
 
 
@@ -31,6 +32,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/home/:id" element={<CardDetail />} />
           <Route path='/slider' element={<Slider />} />
+          <Route path='/tabs' element={<Tabs />} />
           <Route path="/logout" element={<Logout />} />
         </Route>
 

@@ -38,6 +38,9 @@ const Header = () => {
                                     <li className="text-lg font-semibold">
                                         <NavLink to="/slider">Slider</NavLink>
                                     </li>
+                                    <li className="text-lg font-semibold">
+                                        <NavLink to="/tabs">Tabs</NavLink>
+                                    </li>
                                 </>
                             )}
                             {!token ? (
